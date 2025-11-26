@@ -1,3 +1,17 @@
+mysite/
+├── calificaciones/   # App principal con modelos y vistas
+├── api/              # Endpoints REST
+├── consumers/        # Lógica de Kafka consumidor
+├── producers/        # Lógica de Kafka productor
+├── metrics/          # Integración Prometheus
+├── docker-compose.yml
+├── requirements.txt
+└── manage.py
+
+
+
+
+
 # 📘 Sistema de Calificaciones – Django + Kafka + Prometheus
 
 ## 🔎 Descripción general
