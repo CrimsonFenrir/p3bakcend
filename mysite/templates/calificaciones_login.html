@@ -1,0 +1,78 @@
+{% load factores_tags %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calificaciones</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+        h1 { color: #2c3e50; }
+        .tabla-scroll {
+            max-height: 400px;
+            overflow-x: auto;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            background: #fff;
+            margin-top: 20px;
+        }
+        table { min-width: 1200px; border-collapse: collapse; width: 100%; background: white; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background: #2c3e50; color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        a.btn { padding: 5px 10px; text-decoration: none; border-radius: 4px; margin-right: 5px; }
+        .btn-warning { background: orange; color: white; }
+        .btn-danger { background: crimson; color: white; }
+        .btn-success { background: seagreen; color: white; }
+    </style>
+</head>
+<body>
+    <h1>📋 Calificaciones</h1>
+
+    <div class="tabla-scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>Acciones</th>
+                    <th>ID</th>
+                    <th>Instrumento</th>
+                    <th>Descripción</th>
+                    <th>Fecha de Pago</th>
+                    <th>Valor Histórico</th>
+                    {% for i in 8|to:38 %}
+                        <th>Factor {{ i }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for c in calificaciones %}
+                <tr>
+                    <td>
+                        <a href="{% url 'actualizar_calificacion' c.id_calificacion %}" class="btn btn-warning">Editar</a>
+                        <a href="{% url 'eliminar_calificacion' c.id_calificacion %}" class="btn btn-danger">Eliminar</a>
+                    </td>
+                    <td>{{ c.id_calificacion }}</td>
+                    <td>{{ c.instrumento }}</td>
+                    <td>{{ c.descripcion }}</td>
+                    <td>{{ c.fecha_pago }}</td>
+                    <td>{{ c.valor_historico|floatformat:2 }}</td>
+                    {% for i in 8|to:38 %}
+                        {% with f=c.factores.all|get_factor:i %}
+                            <td>{% if f %}{{ f.valor_factor|floatformat:2 }}{% else %}-{% endif %}</td>
+                        {% endwith %}
+                    {% endfor %}
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="40" style="text-align:center;">No hay calificaciones registradas</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <p>
+        <a href="{% url 'crear_calificacion' %}" class="btn btn-success">➕ Nueva Calificación</a>
+        <a href="{% url 'importar_calificaciones' %}" class="btn btn-success">📂 Importar desde Excel</a>
+    </p>
+</body>
+</html>

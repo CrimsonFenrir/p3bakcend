@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Importar Calificaciones desde Excel</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+        h2 { color: #8e44ad; }
+        .form-container { background: white; padding: 20px; border-radius: 6px; max-width: 600px; margin: auto; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .btn { padding: 8px 14px; border-radius: 4px; text-decoration: none; color: white; display: inline-block; margin-right: 8px; margin-top: 10px; }
+        .btn-primary { background: #2980b9; border: none; }
+        .btn-secondary { background: #7f8c8d; }
+        input[type="file"] { width: 100%; padding: 8px; margin-top: 6px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 4px; }
+        .errors { color: red; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #eee; }
+    </style>
+</head>
+<body>
+    <h2>📂 Importar Calificaciones desde Excel</h2>
+    <div class="form-container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if form.errors %}
+                <div class="errors">⚠️ Corrige los errores antes de continuar.</div>
+            {% endif %}
+            <button type="submit" class="btn btn-primary">Importar</button>
+            <a href="{% url 'lista_calificaciones' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    {% if datos %}
+    <h3>📊 Calificaciones Importadas</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Factor</th>
+                <th>Número Factor</th>
+                <th>Valor Factor</th>
+                <th>Instrumento</th>
+                <th>Descripción</th>
+                <th>Fecha de Pago</th>
+                <th>Valor Histórico</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fila in datos %}
+            <tr>
+                <td>{{ fila.id_factor }}</td>
+                <td>{{ fila.numero_factor }}</td>
+                <td>{{ fila.valor_factor }}</td>
+                <td>{{ fila.instrumento }}</td>
+                <td>{{ fila.descripcion }}</td>
+                <td>{{ fila.fecha_pago }}</td>
+                <td>{{ fila.valor_historico }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</body>
+</html>
